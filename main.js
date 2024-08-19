@@ -9,7 +9,7 @@ const
 function resizeCanvas() {
 
     canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
-    canvas.height = window.innerHeight * window.devicePixelRatio;
+    canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
 
     requestAnimationFrame(drawSquare); // Use requestAnimationFrame for smooth updates
 }
@@ -17,8 +17,8 @@ function resizeCanvas() {
 /**
 > Thanks to ChatGPTv4.0 (limited) for the magic produced <br>
 
-> EXPLAINER: Essentially {Math.min} is used to ensure that the square fits within the smallest dimension of the canvas. 
-  _In order to understand the underlying aspect ratio handling `Math.min(canvas.width, canvas.height)`, set `const size = Math.min(canvas.width, canvas.height) / 1` and do some responsive (continuous) device emulation on your browswer of choice, mocking landscape and portrait aspect ratios to see THE REASON "WHY ?" visually_
+> EXPLAINER: Essentially {Math.min} is used to ensure that the square fits within the smallest dimension of the canvas.
+  _In order to understand the underlying **aspect ratio** handling within `Math.min(canvas.width, canvas.height)`, set size as `const size = Math.min(canvas.width, canvas.height) / 1` and do some responsive (continuous) device emulation on your browswer of choice, mocking landscape and portrait aspect ratios to see THE REASON "WHY ?" visually._
 */
 function drawSquare() {
 
