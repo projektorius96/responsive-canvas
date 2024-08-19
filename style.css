@@ -5,22 +5,16 @@ body * {
     margin: 0;
 }
 
-body {
-    display: block;
-    height: 100vh;
-    width: 100vw;
-}
-
-div#app {
+div#stage {
     border: 4px solid black;
-    display: inherit;
-    height: inherit;
-    width: inherit;
+    display: block;
+    width: 100%;
+    height: 100vh; /* OR do 100% and inherit for each canvas, but this may render vertical scrollbar */
 }
 
-canvas#layer-1 {
+canvas {
     border: 2px dashed red;
     display: inherit;
-    height: 100vh;
-    width: 100%;
+    width: inherit;
+    height: 100%;
 }
