@@ -11,6 +11,7 @@ const
   ctx = canvas.getContext('2d')
 ;
 
+
 function resizeCanvas() {
 
     canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
@@ -27,19 +28,22 @@ _In order to understand the underlying **aspect ratio** handling within `Math.mi
 */
 function drawSquare() {
 
-    /* DEV_NOTE # =========================================> 2 gives relatively large square, whilst 256 gives barely visible square bare resemblance to a single pixel drawn on the screen (viewport) */
-    const size = (Math.min(canvas.width, canvas.height) / ( [2, 4, 6, 8, 16, 32, 64, 128, 256].at(/* - */1) )) ;
+    /* DEV_NOTE # set your shape's width|height using absolute values */
+    const absoluteWidth = 1, absoluteHeight = 1;
 
+    /* DEV_NOTE # =========================================> 2 gives relatively large square, whilst 256 gives barely visible square bare resemblance to a single pixel drawn on the screen (viewport) */
+    const size = (Math.min(canvas.width, canvas.height) / ( [2, 4, 6, 8, 16, 32, 64, 128, 256].at(-1) )) ; console.log(canvas.width, canvas.height);
+    
     // DEV_NOTE # we deliberately shift back the pair of (x, y) within dimensions of the square itself
     const 
-      x = (canvas.width - size) / 2
+      x = (canvas.width - size * absoluteWidth) / 2
       ,
-      y = (canvas.height - size) / 2
+      y = (canvas.height - size * absoluteHeight) / 2
     ;
     
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
     ctx.fillStyle = 'green'; // Set the square color
-    ctx.fillRect(x, y, size, size); // Draw the square
+    ctx.fillRect(x, y, size * absoluteWidth, size * absoluteHeight); // Draw the square
 }
 
 resizeCanvas(); // Initial call to set up the canvas size and draw the square
