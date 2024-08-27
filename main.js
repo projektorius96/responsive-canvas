@@ -8,15 +8,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
 const 
   canvas = document.getElementById('layer-1')
   ,
+  stage = canvas.parentElement
+  ,
   ctx = canvas.getContext('2d')
 ;
 
+stage.setAttribute('readonlyCanvasWidth', canvas.parentElement.clientWidth * window.devicePixelRatio)
+stage.setAttribute('readonlyCanvasHeight', canvas.parentElement.clientHeight * window.devicePixelRatio)
 
 function resizeCanvas() {
 
     canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
     canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
-
+    
     requestAnimationFrame(drawSquare); // Use requestAnimationFrame for smooth updates
 }
 
@@ -28,22 +32,25 @@ _In order to understand the underlying **aspect ratio** handling within `Math.mi
 */
 function drawSquare() {
 
-    /* DEV_NOTE # set your shape's width|height using absolute values */
-    const absoluteWidth = 1, absoluteHeight = 1;
+    /* console.log((Number(stage.getAttribute('readonlyCanvasWidth')) / Number(canvas.width))**-1 , ( Number(stage.getAttribute('readonlyCanvasHeight')) / Number(Number(canvas.height)))**-1) */
 
-    /* DEV_NOTE # =========================================> 2 gives relatively large square, whilst 256 gives barely visible square bare resemblance to a single pixel drawn on the screen (viewport) */
-    const size = (Math.min(canvas.width, canvas.height) / ( [2, 4, 6, 8, 16, 32, 64, 128, 256].at(-1) )) ; console.log(canvas.width, canvas.height);
-    
-    // DEV_NOTE # we deliberately shift back the pair of (x, y) within dimensions of the square itself
+    const aspectRatioWidth = ( Number(stage.getAttribute('readonlyCanvasWidth')/*  * devicePixelRatio  */) / Number(canvas.width) )**-1;
+    const aspectRatioHeight = ( Number(stage.getAttribute('readonlyCanvasHeight')/*  * devicePixelRatio */ ) / Number(canvas.height) )**-1;
+    const size = Math.min(aspectRatioWidth, aspectRatioHeight);
+
+    /* DEV_NOTE # set your shape's width|height using absolute values */
+    const absoluteWidth = 200, absoluteHeight = 200;
+
     const 
-      x = (canvas.width - size * absoluteWidth) / 2
+      x = (/* canvas.width */innerWidth - absoluteWidth * size) / 2
       ,
-      y = (canvas.height - size * absoluteHeight) / 2
+      y = (/* canvas.height */innerHeight - absoluteHeight * size) / 2
     ;
     
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
     ctx.fillStyle = 'green'; // Set the square color
-    ctx.fillRect(x, y, size * absoluteWidth, size * absoluteHeight); // Draw the square
+    ctx.scale(devicePixelRatio, devicePixelRatio)
+    ctx.fillRect(x, y, absoluteWidth * size, absoluteHeight * size); // Draw the square
 }
 
 resizeCanvas(); // Initial call to set up the canvas size and draw the square
